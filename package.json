@@ -1,0 +1,32 @@
+{
+  "name": "genonym",
+  "version": "1.0.0",
+  "description": "Convert the DNA sequence that codes for a protein in one species to the appropriate sequence that will work in a different species, while optimizing for translation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wbrickner/Genonym.git"
+  },
+  "keywords": [
+    "Gene",
+    "DNA",
+    "Protein",
+    "Species",
+    "Transfer",
+    "Translate",
+    "Convert",
+    "Genome",
+    "Genomics",
+    "Genetics",
+    "RNA"
+  ],
+  "author": "Will Brickner",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/wbrickner/Genonym/issues"
+  },
+  "homepage": "https://github.com/wbrickner/Genonym#readme"
+}
