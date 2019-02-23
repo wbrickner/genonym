@@ -37,7 +37,7 @@ var fs = require('fs')
     }
 ,   species = { };
 
-module.export = {
+module.exports = {
     init: (config) => {
         if (typeof config === "string") {
             // lookup the config file
