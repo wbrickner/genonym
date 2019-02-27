@@ -1,5 +1,5 @@
 //
-//  Genonym (v1.0.0)
+//  Genonym (v1.0.1)
 //  Written and created by Will Brickner
 //
 //  ----------------------------------------------------
@@ -29,19 +29,19 @@
 //  IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-var fs = require('fs')
-,   path = require('path')
+var fs = require("fs")
+,   path = require("path")
 ,   moduleConfig = {
-        speciesPath: './species/',
-        logLevel: 'normal'
+        speciesPath: "./species/",
+        logLevel: "normal"
     }
-,   species = { };
+,   species = { }
 
 module.exports = {
-    init: (config) => {
+    init: function init(config) {
         if (typeof config === "string") {
             // lookup the config file
-            moduleConfig = JSON.parse(fs.readFileSync(config, 'utf8'));
+            moduleConfig = JSON.parse(fs.readFileSync(config, "utf8"));
         } else if (typeof config === "object") {
             for (var setting in config) {
                 moduleConfig[setting] = config[setting];
@@ -64,44 +64,41 @@ module.exports = {
                     // If no name is provided or the name provided exists already in the `species` object, 
                     //   use the filename without the extension.
                     try {
-                        let parsed = JSON.parse(fs.readFileSync(path.join(moduleConfig.speciesPath, files[j]), 'utf8'))
-                        ,   speciesName = parsed.speciesName || files[j].substr(0, files[j].length - 5);
+                        let parsed = JSON.parse(fs.readFileSync(path.join(moduleConfig.speciesPath, files[j]), "utf8"))
+                        ,   speciesName = parsed.speciesName || files[j].substr(0, files[j].length - 5)
                         
                         if (typeof species[speciesName] !== "undefined") {
-                            speciesName = files[j].substr(0, files[j].length - 5);
+                            speciesName = files[j].substr(0, files[j].length - 5)
                         }
                         
                         if (typeof parsed.codonToAmino !== "object" || typeof parsed.aminoToCodon !== "object") {
                             // TODO: try to fix broken species files automatically
                             if (moduleConfig.logLevel !== "silent") {
-                                console.error("[Genonym]\tError: The species file '" + files[j] + "'" + (parsed.speciesName ? " (\"" + parsed.speciesName + "\")" : "") + " was missing some critical data.  This species was not loaded.");
+                                console.error(`[Genonym]\tError: The species file "${files[j]}" ${parsed.speciesName ? " (\"" + parsed.speciesName + "\")" : ""} was missing some critical data.  This species was not loaded.`)
                             }
                         } else {
-                            parsed.filepath = files[j];
-                            species[speciesName] = parsed;
+                            parsed.filepath = files[j]
+                            species[speciesName] = parsed
                         }
                     } catch (e) {
                         // Assume any exception is because of invalid JSON
                         if (moduleConfig.logLevel !== "silent") {
-                            console.error("\n[Genonym]\tWarning: the file '" + files[j] + "' is not valid.  It could not be added as a species.\n");
+                            console.error(`\n[Genonym]\tWarning: the file "${files[j]}" is not valid.  It could not be added as a species.\n`)
                         }
                     }
                 }
             }
         }
         if (moduleConfig.logLevel === "verbose") {
-            console.log("[Genonym]\tDetected and loaded " + files.length + " species from '" + moduleConfig.speciesPath + "'.");
+            console.log(`[Genonym]\tDetected and loaded ${files.length} species from '${moduleConfig.speciesPath}'.`)
         }
     },
-    DNAToRNA: (obj, cb) => {
+    DNAToRNA: function DNAToRNA(obj, cb) {
         let RNASequence = new Array(obj.sequence.length)
-        ,   DNAToRNA_map = species[obj.speciesName].DNAToRNA;
-        
-//         console.log(obj.speciesName);
-//         console.log(species[obj.speciesName]);
-        
+        ,   DNAToRNA_map = species[obj.speciesName].DNAToRNA
+
         for (var j = 0, jlen = obj.sequence.length; j < jlen; ++j) {
-            RNASequence[j] = DNAToRNA_map[obj.sequence[j]];
+            RNASequence[j] = DNAToRNA_map[obj.sequence[j]]
         }
         
         // provide the output
@@ -114,12 +111,12 @@ module.exports = {
             }
         }
     },
-    RNAToDNA: (obj, cb) => {
+    RNAToDNA: function RNAToDNA(obj, cb) {
         let DNASequence = new Array(obj.sequence.length)
-        ,   RNAToDNA_map = species[obj.speciesName].RNAToDNA;
+        ,   RNAToDNA_map = species[obj.speciesName].RNAToDNA
         
         for (var j = 0, jlen = obj.sequence.length; j < jlen; ++j) {
-            DNASequence[j] = RNAToDNA_map[obj.sequence[j]];
+            DNASequence[j] = RNAToDNA_map[obj.sequence[j]]
         }
         
         if (typeof cb === "function") {
@@ -131,68 +128,69 @@ module.exports = {
             }
         }
     },
-    convert: (obj, cb) => {
+    convert: function convert(obj, cb) {
         // check for invalidity in the parameters
-        let error = new Array();
+        let errors = []
+
         if (typeof obj.sequenceType !== "string") {
             if (moduleConfig.logLevel !== "silent") {
-                console.error("[Genonym]\tError: The `sequenceType` property must be a String, it is of type '" + (typeof obj.sequenceType) + "'.");
+                console.error(`[Genonym]\tError: The 'sequenceType' property must be a String, it is of type "${typeof obj.sequenceType}".`)
             }
-            error.push("Invalid_Property");
+            errors.push("Invalid_Property")
         }
         if (typeof obj.outputType !== "string") {
             if (moduleConfig.logLevel !== "silent") {
-                console.error("[Genonym]\tError: The `outputType` property must be a String, it is of type '" + (typeof obj.outputType) + "'.");
+                console.error(`[Genonym]\tError: The 'outputType' property must be a String, it is of type "${typeof obj.outputType}".`)
             }
-            error.push("Invalid_Property");
+            errors.push("Invalid_Property")
         }
         if (typeof obj.sequence !== "string") {
             if (moduleConfig.logLevel !== "silent") {
-                console.error("[Genonym]\tError: The `sequenceType` property must be a String, it is of type '" + (typeof obj.sequenceType) + "'.");
+                console.error(`[Genonym]\tError: The 'sequence' property must be a String, it is of type "${typeof obj.sequence}".`)
             }
-            error.push("Invalid_Property");
+            errors.push("Invalid_Property")
         }
         if (typeof obj.inputSpecies !== "string") {
             if (moduleConfig.logLevel !== "silent") {
-                console.error("[Genonym]\tError: The `inputSpecies` property must be a String, it is of type '" + (typeof obj.inputSpecies) + "'");
+                console.error(`[Genonym]\tError: The 'inputSpecies' property must be a String, it is of type "${typeof obj.inputSpecies}".`)
             }
-            error.push("Invalid_Property");
+            errors.push("Invalid_Property")
         }
         if (typeof obj.outputSpecies !== "string") {
             if (moduleConfig.logLevel !== "silent") {
-                console.error("[Genonym]\tError: The `outputSpecies` property must be a String, it is of type '" + (typeof obj.outputSpecies) + "'");
+                console.error(`[Genonym]\tError: The 'outputSpecies' property must be a String, it is of type "${typeof obj.outputSpecies}".`)
             }
-            error.push("Invalid_Property");
+            errors.push("Invalid_Property")
         }
         // check that these species exist
         if (typeof species[obj.inputSpecies] === "undefined") {
             if (moduleConfig.logLevel !== "silent") {
-                console.error("[Genonym]\tError: The `inputSpecies` you chose does not exist in the current context.");
+                console.error("[Genonym]\tError: The 'inputSpecies' you chose does not exist in the current context.")
             }
-            error.push("No_Such_Species");
+            errors.push("No_Such_Species")
         }
         if (typeof species[obj.outputSpecies] === "undefined") {
             if (moduleConfig.logLevel !== "silent") {
-                console.error("[Genonym]\tError: The `outputSpecies` you chose does not exist in the current context.");
+                console.error("[Genonym]\tError: The 'outputSpecies' you chose does not exist in the current context.")
             }
-            error.push("No_Such_Species");
+            errors.push("No_Such_Species")
         }
         // check for any errors that were detected
-        if (error.length !== 0) { 
+        if (errors.length !== 0) { 
             if (typeof cb === "function") {
-                cb(error, null);
+                cb(errors, null)
             } else {
                 return {
-                    err: error,
+                    err: errors,
                     sequence: null
                 }
             }
         }
         
         let sequenceType = obj.sequenceType.toUpperCase()
-        ,   outputType = obj.outputType.toUpperCase();
+        ,   outputType = obj.outputType.toUpperCase()
         
-        obj.sequence = obj.sequence.toUpperCase();
+        obj.sequence = obj.sequence.toUpperCase()
         
         // now do the conversion
         if (sequenceType === "DNA") {
@@ -207,14 +205,14 @@ module.exports = {
                 ,   outputSpeciesAminoToCodon = species[obj.outputSpecies].aminoToCodon;
                 
                 // intermediate amino acid representation
-                let outputSequence = new Array(Math.floor(RNA.length / 3));
+                let outputSequence = new Array(Math.floor(RNA.length / 3))
                 for (var j = 0, k = 0, jlen = Math.floor(RNA.length / 3); j < jlen; ++j, k += 3) {
-                    outputSequence[j] = outputSpeciesAminoToCodon[inputSpeciesCodonToAmino[RNA.substr(k, 3)]];
+                    outputSequence[j] = outputSpeciesAminoToCodon[inputSpeciesCodonToAmino[RNA.substr(k, 3)]]
                 }
                 
                 // provide the output
                 if (typeof cb === "function") {
-                    cb(null, outputSequence.join(""));
+                    cb(null, outputSequence.join(""))
                 }
                 else {
                     return {
@@ -222,24 +220,24 @@ module.exports = {
                         sequence: outputSequence.join("")
                     }
                 }
-            });
+            })
         }
         else if (sequenceType === "RNA") {
             // cache this 
             let inputSpeciesCodonToAmino = species[obj.inputSpecies].codonToAmino
-            ,   outputSpeciesAminoToCodon = species[obj.outputSpecies].aminoToCodon;
+            ,   outputSpeciesAminoToCodon = species[obj.outputSpecies].aminoToCodon
             
             // intermediate amino acid representation
-            let outputSequence = new Array(Math.floor(obj.sequence.length / 3));
+            let outputSequence = new Array(Math.floor(obj.sequence.length / 3))
             for (var j = 0, k = 0, jlen = Math.floor(obj.sequence.length / 3); j < jlen; ++j, k += 3) {
-                outputSequence[j] = outputSpeciesAminoToCodon[inputSpeciesCodonToAmino[obj.sequence.substr(k, 3)]];
+                outputSequence[j] = outputSpeciesAminoToCodon[inputSpeciesCodonToAmino[obj.sequence.substr(k, 3)]]
             }
             
             // if the user wants the optimized sequence in RNA, we already have it
             if (outputType === "RNA") {
                 // provide the output
                 if (typeof cb === "function") {
-                    cb(null, outputSequence.join(""));
+                    cb(null, outputSequence.join(""))
                 }
                 else {
                     return {
@@ -264,26 +262,26 @@ module.exports = {
                             sequence: DNA
                         }
                     }
-                });
+                })
             }
         }
         else if (sequenceType === "PROTEIN") {
             // the input is already a sequence of amino acids, and the user wants it returned 
             // as an optimized sequence of DNA or RNA
             
-            let outputSpeciesAminoToCodon = species[obj.outputSpecies].aminoToCodon;
+            let outputSpeciesAminoToCodon = species[obj.outputSpecies].aminoToCodon
             
             // intermediate amino acid representation
-            let outputSequence = new Array(Math.floor(obj.sequence.length / 3));
+            let outputSequence = new Array(Math.floor(obj.sequence.length / 3))
             for (var j = 0, k = 0, jlen = Math.floor(obj.sequence.length / 3); j < jlen; ++j, k += 3) {
-                outputSequence[j] = outputSpeciesAminoToCodon[obj.sequence[j]];
+                outputSequence[j] = outputSpeciesAminoToCodon[obj.sequence[j]]
             }
             
             // if the user wants the sequence returned as RNA, we already have it so simply provide it.
             if (outputType === "RNA") {
                 // provide the output
                 if (typeof cb === "function") {
-                    cb(null, outputSequence.join(""));
+                    cb(null, outputSequence.join(""))
                 }
                 else {
                     return {
@@ -308,10 +306,8 @@ module.exports = {
                             sequence: DNA
                         }
                     }
-                });
+                })
             }
         }
-        
-        // todo
-    },
-};
+    }
+}
