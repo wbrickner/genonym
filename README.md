@@ -20,11 +20,11 @@ Genonym.convert({
   outputSpecies: "Homo sapiens", // humans
   sequenceType: "dna",
   sequence: "ATGTCCAGTTCACAACAAATAGCCAAAAATGCCCGTAAAGCAGGG..."
-}, (err, sequence) => {
+}, (err, converted) => {
     if (err) {
-      return console.error("Error occurred: ", err)
+      return console.error("Error occurred:", err)
     }
-    console.log("Got converted and optimized sequence: ", sequence)
+    console.log("Got converted and optimized sequence:", converted)
 })
 
 ```
@@ -71,11 +71,11 @@ The `conversionObject` should have several properties in order to precisely spec
 
 ```javascript
 {
-	inputSpecies : "<SPECIES>",    // The species from which your sequence originates (this species must be loaded!)
-	outputSpecies: "<SPECIES>",    // The species you would like your sequence to work in and be optimized for (this species must be loaded!)
-	sequenceType : "DNA",          // You can choose `DNA`, `RNA`, or `PROTEIN`
-	sequence : "<YOUR_SEQUENCE>",  // e.g. "CGACGTACTTTGGCCTAA..."
-	outputType: "DNA"              // You can choose `DNA`, or `RNA`
+  inputSpecies : "<SPECIES>",    // The species from which your sequence originates (this species must be loaded!)
+  outputSpecies: "<SPECIES>",    // The species you would like your sequence to work in and be optimized for (this species must be loaded!)
+  sequenceType : "DNA",          // You can choose `DNA`, `RNA`, or `PROTEIN`
+  sequence : "<YOUR_SEQUENCE>",  // e.g. "CGACGTACTTTGGCCTAA..."
+  outputType: "DNA"              // You can choose `DNA`, or `RNA`
 }
 ```
 
@@ -96,8 +96,8 @@ The `sequenceObject` argument should have the following structure:
 
 ```javascript
 {
-	speciesName: "<SPECIES>",
-	sequence: "<YOUR_SEQUENCE>"
+  speciesName: "<SPECIES>",
+  sequence: "<YOUR_SEQUENCE>"
 }
 ```
 
@@ -116,8 +116,8 @@ The `sequenceObject` argument should have the following structure:
 
 ```javascript
 {
-	speciesName: "<SPECIES>",
-	sequence: "<YOUR_SEQUENCE>"
+  speciesName: "<SPECIES>",
+  sequence: "<YOUR_SEQUENCE>"
 }
 ```
 
@@ -146,10 +146,10 @@ These are the properties required in all species files:
 
 ```JSON
 {
-	"A": "U",
-	"T": "A",
-	"C": "G",
-	"G": "C"
+  "A": "U",
+  "T": "A",
+  "C": "G",
+  "G": "C"
 }
 ```
 
@@ -157,10 +157,10 @@ These are the properties required in all species files:
 
 ```JSON
 {
-	"U": "A",
-	"A": "T",
-	"G": "C",
-	"C": "G"
+  "U": "A",
+  "A": "T",
+  "G": "C",
+  "C": "G"
 }
 ```
 
@@ -174,127 +174,127 @@ An example species file for humans would be:
 
 ```JSON
 {
-	"speciesName": "Homo sapiens",
-	"codonToAmino": {
-		"UUU": "F",
-		"UUC": "F",
-		
-		"UUA": "L",
-		"UUG": "L",
-		"CUU": "L",
-		"CUC": "L",
-		"CUA": "L",
-		"CUG": "L",
-		
-		"AUU": "I",
-		"AUC": "I",
-		"AUA": "I",
-		
-		"AUG": "M",
-		
-		"GUU": "V",
-		"GUC": "V",
-		"GUA": "V",
-		"GUG": "V",
-		
-		"UCU": "S",
-		"UCC": "S",
-		"UCA": "S",
-		"UCG": "S",
-		"AGU": "S",
-		"AGC": "S",
+  "speciesName": "Homo sapiens",
+  "codonToAmino": {
+    "UUU": "F",
+    "UUC": "F",
 
-		"CCU": "P",
-		"CCC": "P",
-		"CCA": "P",
-		"CCG": "P",
+    "UUA": "L",
+    "UUG": "L",
+    "CUU": "L",
+    "CUC": "L",
+    "CUA": "L",
+    "CUG": "L",
+
+    "AUU": "I",
+    "AUC": "I",
+    "AUA": "I",
+
+    "AUG": "M",
+
+    "GUU": "V",
+    "GUC": "V",
+    "GUA": "V",
+    "GUG": "V",
 		
-		"ACU": "T",
-		"ACC": "T",
-		"ACA": "T",
-		"ACG": "T",
-		
-		"GCU": "A",
-		"GCC": "A",
-		"GCA": "A",
-		"GCG": "A",
-		
-		"UAU": "Y",
-		"UAC": "Y",
-		
-		"UAA": "*",
-		"UAG": "*",
-		"UGA": "*",
-		
-		"CAU": "H",
-		"CAC": "H",
-		
-		"CAA": "Q",
-		"CAG": "Q",
-		
-		"AAU": "N",
-		"AAC": "N",
-		
-		"AAA": "K",
-		"AAG": "K",
-		
-		"GAU": "D",
-		"GAC": "D",
-		
-		"GAA": "E",
-		"GAG": "E",
-		
-		"UGU": "C",
-		"UGC": "C",
-		
-		"UGG": "W",
-		
-		"CGU": "R",
-		"CGC": "R",
-		"CGA": "R",
-		"CGG": "R",
-		"AGA": "R",
-		"AGG": "R",
-		
-		"GGU": "G",
-		"GGC": "G",
-		"GGA": "G",
-		"GGG": "G"
-	},
-	"aminoToCodon": {
-		"F": "UUC",
-		"L": "CUG",
-		"I": "AUC",
-		"M": "AUG",
-		"V": "GUG",
-		"S": "AGC",
-		"P": "CCC",
-		"T": "ACC",
-		"A": "GCC",
-		"Y": "AUC",
-		"*": "UGA",
-		"H": "CAC",
-		"Q": "CAG",
-		"N": "AAC",
-		"K": "AAG",
-		"D": "GAC",
-		"E": "GAG",
-		"C": "UGC",
-		"R": "AGA",
-		"G": "GGC"
-	},
-	"DNAToRNA": {
-    	"A": "U",
-    	"T": "A",
-    	"C": "G",
-    	"G": "C"
-	},
-	"RNAToDNA": {
-    	"U": "A",
-    	"A": "T",
-    	"G": "C",
-    	"C": "G"
-	}
+    "UCU": "S",
+    "UCC": "S",
+    "UCA": "S",
+    "UCG": "S",
+    "AGU": "S",
+    "AGC": "S",
+
+    "CCU": "P",
+    "CCC": "P",
+    "CCA": "P",
+    "CCG": "P",
+
+    "ACU": "T",
+    "ACC": "T",
+    "ACA": "T",
+    "ACG": "T",
+
+    "GCU": "A",
+    "GCC": "A",
+    "GCA": "A",
+    "GCG": "A",
+
+    "UAU": "Y",
+    "UAC": "Y",
+
+    "UAA": "*",
+    "UAG": "*",
+    "UGA": "*",
+
+    "CAU": "H",
+    "CAC": "H",
+
+    "CAA": "Q",
+    "CAG": "Q",
+
+    "AAU": "N",
+    "AAC": "N",
+
+    "AAA": "K",
+    "AAG": "K",
+
+    "GAU": "D",
+    "GAC": "D",
+
+    "GAA": "E",
+    "GAG": "E",
+
+    "UGU": "C",
+    "UGC": "C",
+
+    "UGG": "W",
+
+    "CGU": "R",
+    "CGC": "R",
+    "CGA": "R",
+    "CGG": "R",
+    "AGA": "R",
+    "AGG": "R",
+
+    "GGU": "G",
+    "GGC": "G",
+    "GGA": "G",
+    "GGG": "G"
+  },
+  "aminoToCodon": {
+    "F": "UUC",
+    "L": "CUG",
+    "I": "AUC",
+    "M": "AUG",
+    "V": "GUG",
+    "S": "AGC",
+    "P": "CCC",
+    "T": "ACC",
+    "A": "GCC",
+    "Y": "AUC",
+    "*": "UGA",
+    "H": "CAC",
+    "Q": "CAG",
+    "N": "AAC",
+    "K": "AAG",
+    "D": "GAC",
+    "E": "GAG",
+    "C": "UGC",
+    "R": "AGA",
+    "G": "GGC"
+  },
+  "DNAToRNA": {
+    "A": "U",
+    "T": "A",
+    "C": "G",
+    "G": "C"
+  },
+  "RNAToDNA": {
+    "U": "A",
+    "A": "T",
+    "G": "C",
+    "C": "G"
+  }
 }
 ```
 # Performance
