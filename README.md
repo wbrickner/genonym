@@ -4,7 +4,6 @@ Convert the DNA sequence that codes for a protein in one species to the appropri
 On my laptop, Genonym converts and optimizes 3 million base pairs per second.
 
 # Installation
-Installation is simple!
 
 ```bash
 npm install genonym --save
@@ -12,24 +11,21 @@ npm install genonym --save
 
 # Quick Start
 ```javascript
-var Genonym = require("genonym");
+var Genonym = require("genonym")
 
-Genonym.init({
-	speciesPath: "./species",
-});
+Genonym.init({ speciesPath: "./species" })
 
 Genonym.convert({
-	inputSpecies: "Saccharomyces cerevisiae", // yeast
-	outputSpecies: "Homo sapiens", // me!
-	sequenceType: "dna",
-	sequence: "ATGTCCAGTTCACAACAAATAGCCAAAAATGCCCGTAAAGCAGGG..."
+  inputSpecies: "Saccharomyces cerevisiae", // yeast
+  outputSpecies: "Homo sapiens", // humans
+  sequenceType: "dna",
+  sequence: "ATGTCCAGTTCACAACAAATAGCCAAAAATGCCCGTAAAGCAGGG..."
 }, (err, sequence) => {
-	if (err) {
-		console.error("Error occurred: ", err);
-	}
-	
-	console.log("Got converted and optimized sequence: ", sequence);
-});
+    if (err) {
+      return console.error("Error occurred: ", err)
+    }
+    console.log("Got converted and optimized sequence: ", sequence)
+})
 
 ```
 
@@ -46,20 +42,18 @@ Genonym.init(config)
 where `config` can be an object (see [Config Options](#Config Options)):
 
 ```javascript
-Genonym.init({
-    speciesPath: "./species"
-});
+Genonym.init({ speciesPath: "./species" })
 ```
 Or a path to a JSON file containing a stringified configuration object:
 
 ```javascript
-Genonym.init("./config/genonym-config.json");
+Genonym.init("./config/genonym-config.json")
 ```
 
 Or nothing at all, in which case the default configuration object is used:
 
 ```javascript
-Genonym.init();
+Genonym.init()
 ```
 
 ## Genonym.convert
@@ -92,7 +86,7 @@ This function converts any DNA sequence into the corresponding RNA sequence.
 It has the form:
 
 ```javascript
-Genonym.DNAToRNA(sequenceObject, callback);
+Genonym.DNAToRNA(sequenceObject, callback)
 ```
 
 Where `callback` is a function of the form (`err`, `RNA`).
@@ -112,7 +106,7 @@ This function converts any RNA sequence into the corresponding DNA sequence.
 It has the form:
 
 ```javascript
-Genonym.RNAToDNA(sequenceObject, callback);
+Genonym.RNAToDNA(sequenceObject, callback)
 ```
 
 Where `callback` is a function of the form (`err`, `DNA`).
@@ -304,7 +298,7 @@ An example species file for humans would be:
 }
 ```
 # Performance
-Genonym can convert and optimize DNA, RNA, and amino acid sequences very quickly.  On my `MacBook Pro (Retina, 13-inch, Late 2012)`, the time to operate on somewhat long sequences (`73,000 bp`) hovered around 18-22ms.  Please note that I have not performed any careful or extensive benchmarking *(yet)*.
+Genonym can convert and optimize DNA, RNA, and amino acid sequences very quickly.  On my `MacBook Pro (Retina, 13-inch, Late 2012)`, the time to operate on somewhat long sequences (`73,000 bp`) hovered around `18-22ms`.  Please note that I have not performed any careful or extensive benchmarking.
 
 #License
 This work uses the `GPL-3.0` license.
