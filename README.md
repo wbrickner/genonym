@@ -30,7 +30,6 @@ Genonym.convert({
 ```
 
 # Documentation
-If you find a mistake anywhere in this documentation, or if you'd like to suggest a feature or an edit, please *open an issue*.
 
 ## Genonym.init
 This function initializes Genonym and loads all the species into memory.
