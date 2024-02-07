@@ -299,13 +299,9 @@ An example species file for humans would be:
 # Performance
 Genonym can convert and optimize DNA, RNA, and amino acid sequences very quickly.  On my `MacBook Pro (Retina, 13-inch, Late 2012)`, the time to operate on somewhat long sequences (`73,000 bp`) hovered around `18-22ms`.  Please note that I have not performed any careful or extensive benchmarking.
 
-#License
+# License
 This work uses the `GPL-3.0` license.
-
 Please see (https://www.gnu.org/licenses/gpl-3.0.en.html) if you are not familiar with this license.
-
-Please provide credit where it is due, (`Thank you @wbrickner for Genonym`) if this package saved you time, money, or effort.  **I worked hard on it and gave it to you for free**.
-
 
 # Disclaimer
 THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
